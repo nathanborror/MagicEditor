@@ -1,4 +1,4 @@
-import AppKit
+import UIKit
 
 class MagicEditorViewController: UIViewController {
 

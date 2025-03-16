@@ -13,8 +13,7 @@ struct MagicEditor: ViewControllerRepresentable {
     }
 
     func makeViewController(context: Context) -> MagicEditorViewController {
-        let controller = MagicEditorViewController()
-        return controller
+        MagicEditorViewController()
     }
 
     func updateViewController(_ controller: MagicEditorViewController, context: Context) {
@@ -42,12 +41,5 @@ struct MagicEditor: ViewControllerRepresentable {
         init(_ parent: MagicEditor) {
             self.parent = parent
         }
-    }
-}
-
-extension NSAttributedString.Key {
-
-    public static var magicRoleMarker: NSAttributedString.Key {
-        .init("MagicRoleMarker")
     }
 }

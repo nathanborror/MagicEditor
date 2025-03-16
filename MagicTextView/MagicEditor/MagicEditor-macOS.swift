@@ -2,24 +2,20 @@ import AppKit
 
 class MagicEditorViewController: NSViewController {
 
-    private var textView: MagicTextView
+    private var textView: NSTextView
 
     init() {
-        self.textView = MagicTextView()
+        self.textView = NSTextView()
         super.init(nibName: nil, bundle: nil)
 
         textView.delegate = self
         textView.textContentStorage?.delegate = self
-        textView.textLayoutManager?.delegate = textView
+        textView.textLayoutManager?.delegate = self
         textView.allowsUndo = true
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func loadView() {
-        self.view = NSView()
     }
 
     override func viewDidLoad() {
@@ -38,21 +34,21 @@ class MagicEditorViewController: NSViewController {
         }
 
         // Marker Example
-        let marker = NSMutableAttributedString(string: "User\n")
-        marker.addAttribute(.magicRoleMarker, value: NSNumber(value: 1), range: NSRange(location: 0, length: 4))
+        let role = NSMutableAttributedString(string: "User\n")
+        role.addAttribute(.roleAttribute, value: NSNumber(value: 1), range: NSRange(location: 0, length: 4))
 
         // Attachment Example
         let attachment = RoleAttachment()
-        attachment.role = "User"
+        attachment.role = "user"
         let attachmentString = NSAttributedString(attachment: attachment)
 
         textView.textContentStorage?.performEditingTransaction {
-            textView.textContentStorage?.textStorage?.insert(marker, at: 0)
+            textView.textContentStorage?.textStorage?.insert(role, at: 0)
             textView.textContentStorage?.textStorage?.append(attachmentString)
         }
 
-//        example_serialize()
-//        example_print_document()
+//        debug_serialize()
+//        debug_print_document()
 
         textView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(textView)
@@ -69,7 +65,7 @@ class MagicEditorViewController: NSViewController {
         print("Fragment:", fragment)
     }
 
-    func example_serialize() {
+    func debug_serialize() {
         let str = textView.attributedString()
         let range = NSRange(location: 0, length: str.length)
         str.enumerateAttributes(in: range) { attributes, range, stop in
@@ -78,7 +74,7 @@ class MagicEditorViewController: NSViewController {
         }
     }
 
-    func example_print_document() {
+    func debug_print_document() {
         let str = textView.attributedString()
         let range = NSRange(location: 0, length: str.length)
         let doc = try? str.data(from: range, documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf])
@@ -88,68 +84,56 @@ class MagicEditorViewController: NSViewController {
 
 extension MagicEditorViewController: NSTextContentManagerDelegate {
 
+    // This is where attributes can be shown or hidden. They are all shown by default.
     func textContentManager(_ textContentManager: NSTextContentManager, shouldEnumerate textElement: NSTextElement, options: NSTextContentManager.EnumerationOptions = []) -> Bool {
-        return true // This is where you can decide to show or hide text elements
+        return true
     }
 }
 
 extension MagicEditorViewController: NSTextContentStorageDelegate {
 
+    // This is where attributes can be located and modified. This will only affect the attributed string
+    // attributes for the attributes (e.g. font, foreground color, etc)
     func textContentStorage(_ textContentStorage: NSTextContentStorage, textParagraphWith range: NSRange) -> NSTextParagraph? {
-        let originalText = textContentStorage.textStorage!.attributedSubstring(from: range)
-        if originalText.attribute(.magicRoleMarker, at: 0, effectiveRange: nil) != nil {
+        let original = textContentStorage.textStorage!.attributedSubstring(from: range)
 
-            // Create attributes and apply them to original string
+        // Decorate custom attributes
+        if original.attribute(.roleAttribute, at: 0, effectiveRange: nil) != nil {
             let attributes: [NSAttributedString.Key: AnyObject] = [.foregroundColor: NSColor.systemRed]
-            let attributedString = NSMutableAttributedString(attributedString: originalText)
+            let attributedString = NSMutableAttributedString(attributedString: original)
             let range = NSRange(location: 0, length: attributedString.length)
             attributedString.addAttributes(attributes, range: range)
-
             return NSTextParagraph(attributedString: attributedString)
-        } else {
-            return nil
         }
+
+        return nil
     }
 }
 
-extension MagicEditorViewController: NSTextViewDelegate {
+extension MagicEditorViewController: NSTextLayoutManagerDelegate {
 
-    func textViewDidChangeSelection(_ notification: Notification) {
-        guard let textView = notification.object as? NSTextView else { return }
-
-        let selectedRange = textView.selectedRange()
-        if selectedRange.length == 0 {
-            if selectedRange.location > 0 && selectedRange.location < textView.string.count {
-                let attributes = textView.textStorage?.attributes(at: selectedRange.location - 1, effectiveRange: nil)
-                textView.typingAttributes = attributes ?? [:]
-            }
-        }
-    }
-}
-
-// MARK: TextView
-
-class MagicTextView: NSTextView {
-}
-
-extension MagicTextView: NSTextLayoutManagerDelegate {
-
+    // This is where attributes can receive a custom layout (e.g. custom view) — I think this view is just
+    // applied as a background to the attributed string. Throws an exception if the location is outside the bounds
+    // of the length, also when location and length are 0.
     func textLayoutManager(_ textLayoutManager: NSTextLayoutManager, textLayoutFragmentFor location: any NSTextLocation, in textElement: NSTextElement) -> NSTextLayoutFragment {
         let ignore = NSTextLayoutFragment(textElement: textElement, range: textElement.elementRange)
         let location = textLayoutManager.offset(from: textLayoutManager.documentRange.location, to: location)
 
-        // Throws exception if the location is outside the bounds of the length, also when location and length are 0.
-        guard let length = textStorage?.length, location < length else {
+        guard let length = textView.textStorage?.length, location < length else {
+            return ignore
+        }
+        guard let textStorage = textView.textContentStorage?.textStorage else {
             return ignore
         }
 
-        // Get attribute of interest and return a special fragment with additional visual treatments.
-        guard let textStorage = textContentStorage?.textStorage else {
-            return ignore
+        // Decorate layout of custom attributes
+        if textStorage.attribute(.roleAttribute, at: location, effectiveRange: nil) as? NSNumber != nil {
+            return RoleFragment(textElement: textElement, range: textElement.elementRange)
         }
-        guard textStorage.attribute(.magicRoleMarker, at: location, effectiveRange: nil) as? NSNumber != nil else {
-            return ignore
-        }
-        return MagicRoleFragment(textElement: textElement, range: textElement.elementRange)
+
+        return ignore
     }
+}
+
+extension MagicEditorViewController: NSTextViewDelegate {
 }

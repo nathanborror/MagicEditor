@@ -1,6 +1,12 @@
 import AppKit
 
-class MagicRoleFragment: NSTextLayoutFragment {
+extension NSAttributedString.Key {
+    public static var roleAttribute: NSAttributedString.Key {
+        .init("RoleAttribute")
+    }
+}
+
+class RoleFragment: NSTextLayoutFragment {
 
     override var leadingPadding: CGFloat { 12 }
     override var trailingPadding: CGFloat { 0 }

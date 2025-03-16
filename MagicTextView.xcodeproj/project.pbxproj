@@ -14,9 +14,10 @@
 		D8BC505E2D85DAD1003B070F /* MagicEditor+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */; };
 		D8BC50602D85DBBF003B070F /* MagicEditor-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC505F2D85DBBF003B070F /* MagicEditor-iOS.swift */; platformFilter = ios; };
 		D8BC50622D85E66C003B070F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D8BC50612D85E66C003B070F /* README.md */; };
-		D8BC50652D862B90003B070F /* MagicRoleFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50642D862B90003B070F /* MagicRoleFragment.swift */; };
+		D8BC50652D862B90003B070F /* RoleFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50642D862B90003B070F /* RoleFragment.swift */; };
 		D8BC50B72D872423003B070F /* RoleAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50B62D872423003B070F /* RoleAttachment.swift */; };
 		D8BC50B92D873C18003B070F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50B82D873C18003B070F /* Extensions.swift */; };
+		D8BC50BB2D8742CF003B070F /* MagicAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50BA2D8742CF003B070F /* MagicAttachment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,9 +30,10 @@
 		D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor+SwiftUI.swift"; sourceTree = "<group>"; };
 		D8BC505F2D85DBBF003B070F /* MagicEditor-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor-iOS.swift"; sourceTree = "<group>"; };
 		D8BC50612D85E66C003B070F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D8BC50642D862B90003B070F /* MagicRoleFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicRoleFragment.swift; sourceTree = "<group>"; };
+		D8BC50642D862B90003B070F /* RoleFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleFragment.swift; sourceTree = "<group>"; };
 		D8BC50B62D872423003B070F /* RoleAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleAttachment.swift; sourceTree = "<group>"; };
 		D8BC50B82D873C18003B070F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		D8BC50BA2D8742CF003B070F /* MagicAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicAttachment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +100,7 @@
 		D8BC50632D862B74003B070F /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
-				D8BC50642D862B90003B070F /* MagicRoleFragment.swift */,
+				D8BC50642D862B90003B070F /* RoleFragment.swift */,
 			);
 			path = Fragments;
 			sourceTree = "<group>";
@@ -106,6 +108,7 @@
 		D8BC50B52D87241C003B070F /* Attachments */ = {
 			isa = PBXGroup;
 			children = (
+				D8BC50BA2D8742CF003B070F /* MagicAttachment.swift */,
 				D8BC50B62D872423003B070F /* RoleAttachment.swift */,
 			);
 			path = Attachments;
@@ -187,8 +190,9 @@
 				D8BC50602D85DBBF003B070F /* MagicEditor-iOS.swift in Sources */,
 				D8BC505C2D85DAB9003B070F /* MagicEditor-macOS.swift in Sources */,
 				D8BC50552D85DA47003B070F /* ContentView.swift in Sources */,
+				D8BC50BB2D8742CF003B070F /* MagicAttachment.swift in Sources */,
 				D8BC50B92D873C18003B070F /* Extensions.swift in Sources */,
-				D8BC50652D862B90003B070F /* MagicRoleFragment.swift in Sources */,
+				D8BC50652D862B90003B070F /* RoleFragment.swift in Sources */,
 				D8BC505E2D85DAD1003B070F /* MagicEditor+SwiftUI.swift in Sources */,
 				D8BC50562D85DA47003B070F /* MainApp.swift in Sources */,
 				D8BC50B72D872423003B070F /* RoleAttachment.swift in Sources */,
