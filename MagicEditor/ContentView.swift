@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State private var viewModel = MagicEditorViewModel(string: "Hello, world!")
+    @State private var viewModel = MagicEditorViewModel()
 
     var body: some View {
         MagicEditor(viewModel: $viewModel)
@@ -36,6 +36,9 @@ struct ContentView: View {
                         Label("Export", systemImage: "square.and.arrow.up")
                     }
                 }
+            }
+            .onAppear {
+                viewModel.read(string: "Hello, world!")
             }
     }
 

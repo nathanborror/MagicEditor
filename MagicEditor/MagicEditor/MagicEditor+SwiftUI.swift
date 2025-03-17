@@ -11,13 +11,11 @@ struct MagicEditor: PlatformViewControllerRepresentable {
 
     func makeViewController(context: Context) -> MagicEditorViewController {
         let controller = MagicEditorViewController()
-        controller.setAttributedString(viewModel.attributedString)
         viewModel.connect(to: controller)
         return controller
     }
 
     func updateViewController(_ controller: MagicEditorViewController, context: Context) {
-        controller.setAttributedString(viewModel.attributedString)
     }
 
     #if os(macOS)

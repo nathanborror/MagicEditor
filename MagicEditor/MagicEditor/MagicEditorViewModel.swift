@@ -10,21 +10,20 @@ typealias PlatformFont = UIFont
 @Observable
 final class MagicEditorViewModel {
 
-    var attributedString: NSAttributedString
-
     private weak var controller: MagicEditorViewController? = nil
 
-    init(string: String) {
-        self.attributedString = .init(
+    func connect(to controller: MagicEditorViewController) {
+        self.controller = controller
+    }
+
+    func read(string: String) {
+        let attributedString = NSAttributedString(
             string: string,
             attributes: [
                 .font: PlatformFont.systemFont(ofSize: 16)
             ]
         )
-    }
-
-    func connect(to controller: MagicEditorViewController) {
-        self.controller = controller
+        controller?.setAttributedString(attributedString)
     }
 
     func insert(attachment: NSTextAttachment) {
