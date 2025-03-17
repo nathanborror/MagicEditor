@@ -42,16 +42,8 @@ struct RoleAttachmentView: View {
         }
     }
 
-    private var displayText: String {
-        if role == "user" {
-            return "You"
-        } else {
-            return role.capitalized
-        }
-    }
-
     var body: some View {
-        Text(displayText)
+        Text(role)
             .font(.system(size: attachmentFontSize))
             .foregroundColor(attachmentTextColor)
             .padding(.horizontal, attachmentHorizontalPadding)

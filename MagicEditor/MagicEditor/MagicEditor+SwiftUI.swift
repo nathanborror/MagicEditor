@@ -1,17 +1,13 @@
 import SwiftUI
 
 #if os(macOS)
-typealias ViewControllerRepresentable = NSViewControllerRepresentable
+typealias PlatformViewControllerRepresentable = NSViewControllerRepresentable
 #else
-typealias ViewControllerRepresentable = UIViewControllerRepresentable
+typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
 #endif
 
-struct MagicEditor: ViewControllerRepresentable {
+struct MagicEditor: PlatformViewControllerRepresentable {
     @Binding var viewModel: MagicEditorViewModel
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
 
     func makeViewController(context: Context) -> MagicEditorViewController {
         let controller = MagicEditorViewController()
@@ -39,12 +35,4 @@ struct MagicEditor: ViewControllerRepresentable {
         updateViewController(controller, context: context)
     }
     #endif
-
-    class Coordinator {
-        var parent: MagicEditor
-
-        init(_ parent: MagicEditor) {
-            self.parent = parent
-        }
-    }
 }
