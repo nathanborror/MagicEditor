@@ -18,13 +18,14 @@
 		D8BC50B72D872423003B070F /* RoleAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50B62D872423003B070F /* RoleAttachment.swift */; };
 		D8BC50B92D873C18003B070F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50B82D873C18003B070F /* Extensions.swift */; };
 		D8BC50BB2D8742CF003B070F /* MagicAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50BA2D8742CF003B070F /* MagicAttachment.swift */; };
+		D8BC50BD2D879C82003B070F /* MagicEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50BC2D879C82003B070F /* MagicEditorViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D8BC503E2D85DA28003B070F /* MagicTextView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicTextView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8BC503E2D85DA28003B070F /* MagicEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8BC50502D85DA47003B070F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8BC50512D85DA47003B070F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		D8BC50522D85DA47003B070F /* MagicTextView.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MagicTextView.entitlements; sourceTree = "<group>"; };
+		D8BC50522D85DA47003B070F /* MagicEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MagicEditor.entitlements; sourceTree = "<group>"; };
 		D8BC50532D85DA47003B070F /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
 		D8BC505B2D85DAB9003B070F /* MagicEditor-macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor-macOS.swift"; sourceTree = "<group>"; };
 		D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor+SwiftUI.swift"; sourceTree = "<group>"; };
@@ -34,6 +35,7 @@
 		D8BC50B62D872423003B070F /* RoleAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleAttachment.swift; sourceTree = "<group>"; };
 		D8BC50B82D873C18003B070F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D8BC50BA2D8742CF003B070F /* MagicAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicAttachment.swift; sourceTree = "<group>"; };
+		D8BC50BC2D879C82003B070F /* MagicEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicEditorViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,7 +52,7 @@
 		D8BC50352D85DA28003B070F = {
 			isa = PBXGroup;
 			children = (
-				D8BC50542D85DA47003B070F /* MagicTextView */,
+				D8BC50542D85DA47003B070F /* MagicEditor */,
 				D8BC503F2D85DA28003B070F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,12 +60,12 @@
 		D8BC503F2D85DA28003B070F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8BC503E2D85DA28003B070F /* MagicTextView.app */,
+				D8BC503E2D85DA28003B070F /* MagicEditor.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D8BC50542D85DA47003B070F /* MagicTextView */ = {
+		D8BC50542D85DA47003B070F /* MagicEditor */ = {
 			isa = PBXGroup;
 			children = (
 				D8BC50532D85DA47003B070F /* MainApp.swift */,
@@ -72,14 +74,14 @@
 				D8BC505A2D85DAAD003B070F /* MagicEditor */,
 				D8BC50582D85DA4B003B070F /* Resources */,
 			);
-			path = MagicTextView;
+			path = MagicEditor;
 			sourceTree = "<group>";
 		};
 		D8BC50582D85DA4B003B070F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				D8BC50502D85DA47003B070F /* Assets.xcassets */,
-				D8BC50522D85DA47003B070F /* MagicTextView.entitlements */,
+				D8BC50522D85DA47003B070F /* MagicEditor.entitlements */,
 				D8BC50612D85E66C003B070F /* README.md */,
 			);
 			path = Resources;
@@ -93,6 +95,7 @@
 				D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */,
 				D8BC505B2D85DAB9003B070F /* MagicEditor-macOS.swift */,
 				D8BC505F2D85DBBF003B070F /* MagicEditor-iOS.swift */,
+				D8BC50BC2D879C82003B070F /* MagicEditorViewModel.swift */,
 			);
 			path = MagicEditor;
 			sourceTree = "<group>";
@@ -117,9 +120,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D8BC503D2D85DA28003B070F /* MagicTextView */ = {
+		D8BC503D2D85DA28003B070F /* MagicEditor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8BC504D2D85DA29003B070F /* Build configuration list for PBXNativeTarget "MagicTextView" */;
+			buildConfigurationList = D8BC504D2D85DA29003B070F /* Build configuration list for PBXNativeTarget "MagicEditor" */;
 			buildPhases = (
 				D8BC503A2D85DA28003B070F /* Sources */,
 				D8BC503B2D85DA28003B070F /* Frameworks */,
@@ -129,11 +132,11 @@
 			);
 			dependencies = (
 			);
-			name = MagicTextView;
+			name = MagicEditor;
 			packageProductDependencies = (
 			);
-			productName = MagicTextView;
-			productReference = D8BC503E2D85DA28003B070F /* MagicTextView.app */;
+			productName = MagicEditor;
+			productReference = D8BC503E2D85DA28003B070F /* MagicEditor.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -151,7 +154,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D8BC50392D85DA28003B070F /* Build configuration list for PBXProject "MagicTextView" */;
+			buildConfigurationList = D8BC50392D85DA28003B070F /* Build configuration list for PBXProject "MagicEditor" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -165,7 +168,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8BC503D2D85DA28003B070F /* MagicTextView */,
+				D8BC503D2D85DA28003B070F /* MagicEditor */,
 			);
 		};
 /* End PBXProject section */
@@ -190,6 +193,7 @@
 				D8BC50602D85DBBF003B070F /* MagicEditor-iOS.swift in Sources */,
 				D8BC505C2D85DAB9003B070F /* MagicEditor-macOS.swift in Sources */,
 				D8BC50552D85DA47003B070F /* ContentView.swift in Sources */,
+				D8BC50BD2D879C82003B070F /* MagicEditorViewModel.swift in Sources */,
 				D8BC50BB2D8742CF003B070F /* MagicAttachment.swift in Sources */,
 				D8BC50B92D873C18003B070F /* Extensions.swift in Sources */,
 				D8BC50652D862B90003B070F /* RoleFragment.swift in Sources */,
@@ -321,10 +325,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = MagicTextView/Resources/MagicTextView.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MagicEditor/Resources/MagicEditor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 294VZ3T33E;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -343,7 +347,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = run.nathan.MagicTextView;
+				PRODUCT_BUNDLE_IDENTIFIER = run.nathan.MagicEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -360,10 +364,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = MagicTextView/Resources/MagicTextView.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MagicEditor/Resources/MagicEditor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 294VZ3T33E;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -382,7 +386,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = run.nathan.MagicTextView;
+				PRODUCT_BUNDLE_IDENTIFIER = run.nathan.MagicEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -397,7 +401,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D8BC50392D85DA28003B070F /* Build configuration list for PBXProject "MagicTextView" */ = {
+		D8BC50392D85DA28003B070F /* Build configuration list for PBXProject "MagicEditor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8BC504B2D85DA29003B070F /* Debug */,
@@ -406,7 +410,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8BC504D2D85DA29003B070F /* Build configuration list for PBXNativeTarget "MagicTextView" */ = {
+		D8BC504D2D85DA29003B070F /* Build configuration list for PBXNativeTarget "MagicEditor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8BC504E2D85DA29003B070F /* Debug */,

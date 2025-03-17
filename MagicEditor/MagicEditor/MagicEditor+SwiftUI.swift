@@ -7,16 +7,21 @@ typealias ViewControllerRepresentable = UIViewControllerRepresentable
 #endif
 
 struct MagicEditor: ViewControllerRepresentable {
+    @Binding var viewModel: MagicEditorViewModel
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
     func makeViewController(context: Context) -> MagicEditorViewController {
-        MagicEditorViewController()
+        let controller = MagicEditorViewController()
+        controller.setAttributedString(.init(viewModel.attributedString))
+        viewModel.connect(to: controller)
+        return controller
     }
 
     func updateViewController(_ controller: MagicEditorViewController, context: Context) {
+        controller.setAttributedString(.init(viewModel.attributedString))
     }
 
     #if os(macOS)

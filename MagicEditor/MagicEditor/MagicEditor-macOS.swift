@@ -2,7 +2,7 @@ import AppKit
 
 class MagicEditorViewController: NSViewController {
 
-    private var textView: NSTextView
+    var textView: NSTextView
 
     init() {
         self.textView = NSTextView()
@@ -13,39 +13,13 @@ class MagicEditorViewController: NSViewController {
         textView.textLayoutManager?.delegate = self
         textView.allowsUndo = true
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        do {
-            let url = Bundle.main.url(forResource: "README", withExtension: "md")!
-            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                .defaultAttributes: [
-                    NSAttributedString.Key.font: NSFont.systemFont(ofSize: 15),
-                ],
-            ]
-            try textView.textStorage?.read(from: url, options: options, documentAttributes: nil, error: ())
-        } catch {
-            print(error)
-        }
-
-        // Marker Example
-        let role = NSMutableAttributedString(string: "User\n")
-        role.addAttribute(.roleAttribute, value: NSNumber(value: 1), range: NSRange(location: 0, length: 4))
-
-        // Attachment Example
-        let attachment = RoleAttachment()
-        attachment.role = "user"
-        let attachmentString = NSAttributedString(attachment: attachment)
-
-        textView.textContentStorage?.performEditingTransaction {
-            textView.textContentStorage?.textStorage?.insert(role, at: 0)
-            textView.textContentStorage?.textStorage?.append(attachmentString)
-        }
 
 //        debug_serialize()
 //        debug_print_document()
@@ -61,24 +35,10 @@ class MagicEditorViewController: NSViewController {
         ])
     }
 
-    func showPopover(_ fragment: NSTextLayoutFragment) {
-        print("Fragment:", fragment)
-    }
-
-    func debug_serialize() {
-        let str = textView.attributedString()
-        let range = NSRange(location: 0, length: str.length)
-        str.enumerateAttributes(in: range) { attributes, range, stop in
-            print(attributes, range)
-            print("---")
+    func setAttributedString(_ attributedString: NSAttributedString) {
+        if textView.textStorage?.isEqual(to: attributedString) == false {
+            textView.textStorage?.setAttributedString(attributedString)
         }
-    }
-
-    func debug_print_document() {
-        let str = textView.attributedString()
-        let range = NSRange(location: 0, length: str.length)
-        let doc = try? str.data(from: range, documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf])
-        print(String(data: doc!, encoding: .utf8)!)
     }
 }
 

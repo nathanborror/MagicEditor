@@ -3,8 +3,3 @@
 xcuserdata/
 DerivedData/
 .swiftpm/
-
-.env
-*.env
-.env.local
-
