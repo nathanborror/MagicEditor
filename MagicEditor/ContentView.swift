@@ -13,21 +13,34 @@ struct ContentView: View {
             .padding()
             .toolbar {
                 ToolbarItem {
-                    Button {
-                        let role = RoleAttachment()
-                        role.role = "user"
-                        viewModel.insert(attachment: role)
+                    Menu {
+                        Button("User") {
+                            handleInsert(role: "user")
+                        }
+                        Button("Assistant") {
+                            handleInsert(role: "assistant")
+                        }
+                        Button("System") {
+                            handleInsert(role: "system")
+                        }
                     } label: {
-                        Label("Insert", systemImage: "arrow.down")
+                        Label("Insert", systemImage: "paperclip")
                     }
+                    .menuIndicator(.hidden)
                 }
                 ToolbarItem {
                     Button {
                         print(viewModel.toRichText())
                     } label: {
-                        Label("Save", systemImage: "checkmark")
+                        Label("Export", systemImage: "square.and.arrow.up")
                     }
                 }
             }
+    }
+
+    func handleInsert(role: String) {
+        let attachment = RoleAttachment()
+        attachment.role = role
+        viewModel.insert(attachment: attachment)
     }
 }
