@@ -1,5 +1,11 @@
 import SwiftUI
 
+#if os(macOS)
+typealias PlatformFont = NSFont
+#else
+typealias PlatformFont = UIFont
+#endif
+
 @MainActor
 @Observable
 final class MagicEditorViewModel {
@@ -9,7 +15,12 @@ final class MagicEditorViewModel {
     private weak var controller: MagicEditorViewController? = nil
 
     init(string: String) {
-        self.attributedString = .init(string: string)
+        self.attributedString = .init(
+            string: string,
+            attributes: [
+                .font: PlatformFont.systemFont(ofSize: 16)
+            ]
+        )
     }
 
     func connect(to controller: MagicEditorViewController) {

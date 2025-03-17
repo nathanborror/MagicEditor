@@ -19,7 +19,7 @@ class RoleAttachment: NSTextAttachment, @unchecked Sendable {
 struct RoleAttachmentView: View {
     var role: String
 
-    private let attachmentFontSize: CGFloat = 11
+    private let attachmentFontSize: CGFloat = 13
     private let attachmentHorizontalPadding: CGFloat = 8
     private let attachmentVerticalPadding: CGFloat = 3
     private let attachmentCornerRadius: CGFloat = 10
@@ -43,7 +43,7 @@ struct RoleAttachmentView: View {
     }
 
     var body: some View {
-        Text(role)
+        Text(role.capitalized)
             .font(.system(size: attachmentFontSize))
             .foregroundColor(attachmentTextColor)
             .padding(.horizontal, attachmentHorizontalPadding)
