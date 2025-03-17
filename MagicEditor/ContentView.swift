@@ -26,7 +26,12 @@ struct ContentView: View {
                 }
                 ToolbarItem {
                     Button {
-                        print(viewModel.toRichText())
+                        if let (output, attachments) = viewModel.serialize() {
+                            print(output)
+                            print(attachments)
+                        } else {
+                            print("Failed to serialize output")
+                        }
                     } label: {
                         Label("Export", systemImage: "square.and.arrow.up")
                     }

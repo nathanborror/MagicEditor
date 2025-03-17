@@ -92,10 +92,10 @@
 			children = (
 				D8BC50B52D87241C003B070F /* Attachments */,
 				D8BC50632D862B74003B070F /* Fragments */,
+				D8BC50BC2D879C82003B070F /* MagicEditorViewModel.swift */,
 				D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */,
 				D8BC505B2D85DAB9003B070F /* MagicEditor-macOS.swift */,
 				D8BC505F2D85DBBF003B070F /* MagicEditor-iOS.swift */,
-				D8BC50BC2D879C82003B070F /* MagicEditorViewModel.swift */,
 			);
 			path = MagicEditor;
 			sourceTree = "<group>";

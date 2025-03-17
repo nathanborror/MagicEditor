@@ -37,22 +37,41 @@ final class MagicEditorViewModel {
         }
     }
 
-    func toRichText() -> String? {
+    func serialize() -> (String, [AttachmentRef])? {
         guard let textView = controller?.textView else { return nil }
-        let str = textView.attributedString()
-        let range = NSRange(location: 0, length: str.length)
-        let doc = try? str.data(from: range, documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf])
-        return String(data: doc!, encoding: .utf8)
-    }
 
-//    func debug_serialize() {
-//        guard let textView = controller?.textView else { return }
-//
-//        let str = textView.attributedString()
-//        let range = NSRange(location: 0, length: str.length)
-//        str.enumerateAttributes(in: range) { attributes, range, stop in
-//            print(attributes, range)
-//            print("---")
-//        }
-//    }
+        var output = ""
+        var attachments: [AttachmentRef] = []
+
+        let attributedString = textView.attributedString()
+        let range = NSRange(location: 0, length: attributedString.length)
+
+        attributedString.enumerateAttributes(in: range) { attributes, range, stop in
+            let str = attributedString.attributedSubstring(from: range).string
+            output += str
+
+            // Serialize Attachments
+            if let attachment = attributes[NSAttributedString.Key.attachment] as? RoleAttachment {
+                let ref = AttachmentRef(
+                    type: "RoleAttachment",
+                    value: attachment.role,
+                    location: range.location,
+                    length: range.length
+                )
+                attachments.append(ref)
+            }
+
+            // Look for additional attachment types here
+
+        }
+
+        return (output, attachments)
+    }
+}
+
+struct AttachmentRef {
+    let type: String
+    let value: String
+    let location: Int
+    let length: Int
 }
