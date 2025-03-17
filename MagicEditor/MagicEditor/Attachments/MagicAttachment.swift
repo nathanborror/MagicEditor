@@ -1,6 +1,23 @@
 import SwiftUI
 
-class MagicAttachmentView<Content: View>: NSView {
+/// A generic attachment view provider that should be used with custom `NSTextAttachment` instances.
+class MagicAttachmentViewProvider<Content: View>: NSTextAttachmentViewProvider {
+    let content: Content
+
+    init(content: Content, textAttachment: NSTextAttachment, parentView: NSView?, textLayoutManager: NSTextLayoutManager?, location: any NSTextLocation) {
+        self.content = content
+        super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
+    }
+
+    override func loadView() {
+        let attachmentView = MagicAttachmentView(content: content)
+        attachmentView.attachment = textAttachment
+        view = attachmentView
+    }
+}
+
+/// A generic attachment view that should only be used by `MagicAttachmentViewProvider` when loading custom `NSTextAttachment` views.
+fileprivate class MagicAttachmentView<Content: View>: NSView {
 
     var attachment: NSTextAttachment? {
         didSet { updateHostingView() }
@@ -44,20 +61,5 @@ class MagicAttachmentView<Content: View>: NSView {
 
     override var intrinsicContentSize: NSSize {
         return hostingController?.view.intrinsicContentSize ?? .zero
-    }
-}
-
-class MagicAttachmentViewProvider<Content: View>: NSTextAttachmentViewProvider {
-    let content: Content
-
-    init(content: Content, textAttachment: NSTextAttachment, parentView: NSView?, textLayoutManager: NSTextLayoutManager?, location: any NSTextLocation) {
-        self.content = content
-        super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
-    }
-
-    override func loadView() {
-        let attachmentView = MagicAttachmentView(content: content)
-        attachmentView.attachment = textAttachment
-        view = attachmentView
     }
 }
