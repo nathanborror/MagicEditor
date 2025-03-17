@@ -2,11 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State private var viewModel = MagicEditorViewModel(
-        attributedString: AttributedString("Hello, world!", attributes: .init([
-            .font: NSFont.systemFont(ofSize: 17),
-        ]))
-    )
+    @State private var viewModel = MagicEditorViewModel(string: "Hello, world!")
 
     var body: some View {
         MagicEditor(viewModel: $viewModel)

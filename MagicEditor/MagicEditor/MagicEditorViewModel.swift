@@ -4,12 +4,12 @@ import SwiftUI
 @Observable
 final class MagicEditorViewModel {
 
-    var attributedString: AttributedString
-    
+    var attributedString: NSAttributedString
+
     private weak var controller: MagicEditorViewController? = nil
 
-    init(attributedString: AttributedString) {
-        self.attributedString = attributedString
+    init(string: String) {
+        self.attributedString = .init(string: string)
     }
 
     func connect(to controller: MagicEditorViewController) {
