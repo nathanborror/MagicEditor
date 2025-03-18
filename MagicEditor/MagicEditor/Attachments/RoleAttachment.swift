@@ -1,8 +1,17 @@
 import SwiftUI
 
 class RoleAttachment: NSTextAttachment, @unchecked Sendable {
-    var role: String = "user"
+    let role: String
 
+    init(role: String) {
+        self.role = role
+        super.init(data: nil, ofType: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewProvider(for parentView: NSView?, location: NSTextLocation, textContainer: NSTextContainer?) -> NSTextAttachmentViewProvider? {
         let provider = MagicAttachmentViewProvider(
             content: RoleAttachmentView(role: role),

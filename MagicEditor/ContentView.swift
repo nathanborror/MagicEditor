@@ -43,8 +43,7 @@ struct ContentView: View {
     }
 
     func handleInsert(role: String) {
-        let attachment = RoleAttachment()
-        attachment.role = role
+        let attachment = RoleAttachment(role: role)
         viewModel.insert(attachment: attachment)
     }
 }
