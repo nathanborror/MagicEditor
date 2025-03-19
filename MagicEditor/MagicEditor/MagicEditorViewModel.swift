@@ -58,13 +58,17 @@ final class MagicEditorViewModel {
 
             // Attachment attributes
             if let attachment = attributes[NSAttributedString.Key.attachment] as? RoleAttachment {
-                let attr = MagicDocument.Attribute(key: "Attachment.Role", value: attachment.role, start: range.location, end: range.length)
+                let attr = MagicDocument.Attribute(key: "Attachment.Role", value: attachment.role, location: range.location, length: range.length)
+                out.attributes.append(attr)
+            }
+            if let attachment = attributes[NSAttributedString.Key.attachment] as? ArticleAttachment {
+                let attr = MagicDocument.Attribute(key: "Attachment.Article", value: attachment.content, location: range.location, length: range.length)
                 out.attributes.append(attr)
             }
 
             // Font attributes
-            if hasFont(attributes, with: .bold) {
-                let attr = MagicDocument.Attribute(key: "Font.Bold", value: "", start: range.location, end: range.length)
+            if MagicFunction.hasFont(attributes, with: .bold) {
+                let attr = MagicDocument.Attribute(key: "Font.Bold", value: "", location: range.location, length: range.length)
                 out.attributes.append(attr)
             }
 
@@ -79,10 +83,14 @@ final class MagicEditorViewModel {
             attributes: [.font: PlatformFont.systemFont(ofSize: 16)]
         )
         for attribute in document.attributes {
-            let range = NSMakeRange(attribute.start, attribute.end)
+            let range = NSMakeRange(attribute.location, attribute.length)
             switch attribute.key {
             case "Attachment.Role":
                 let attachment = RoleAttachment(role: attribute.value)
+                let attachmentString = NSAttributedString(attachment: attachment)
+                out.replaceCharacters(in: range, with: attachmentString)
+            case "Attachment.Article":
+                let attachment = ArticleAttachment(content: attribute.value)
                 let attachmentString = NSAttributedString(attachment: attachment)
                 out.replaceCharacters(in: range, with: attachmentString)
             case "Font.Bold":
@@ -105,12 +113,12 @@ extension MagicEditorViewModel {
         for attribute in textStorage.attributes(at: selectedRange.location, effectiveRange: &effectiveRange) {
 
             // Ignore attachments, they cannot have text styles applied to them
-            if isAttachment(attribute) {
+            if MagicFunction.isAttachment(attribute) {
                 return
             }
 
             textContentStorage.performEditingTransaction {
-                if isFont(attribute, with: .bold) {
+                if MagicFunction.isFont(attribute, with: .bold) {
                     textStorage.addAttributes([
                         .font: PlatformFont.systemFont(ofSize: 16)
                     ], range: effectiveRange)
@@ -131,14 +139,14 @@ struct MagicDocument: Codable {
     struct Attribute: Codable {
         var key: String
         var value: String
-        var start: Int
-        var end: Int
+        var location: Int
+        var length: Int
 
-        init(key: String, value: String, start: Int, end: Int) {
+        init(key: String, value: String, location: Int, length: Int) {
             self.key = key
             self.value = value
-            self.start = start
-            self.end = end
+            self.location = location
+            self.length = length
         }
     }
 
@@ -146,30 +154,4 @@ struct MagicDocument: Codable {
         self.text = text
         self.attributes = attributes
     }
-}
-
-// MARK: Convenience
-
-fileprivate func isAttachment(_ attribute: (NSAttributedString.Key, Any)) -> Bool {
-    return attribute.1 is NSTextAttachment
-}
-
-fileprivate func hasFont(_ attributes: [NSAttributedString.Key: Any], with trait: NSFontDescriptor.SymbolicTraits? = nil) -> Bool {
-    guard let font = attributes[NSAttributedString.Key.font] as? NSFont else {
-        return false
-    }
-    guard let trait else {
-        return true
-    }
-    return font.fontDescriptor.symbolicTraits.contains(trait)
-}
-
-fileprivate func isFont(_ attribute: (NSAttributedString.Key, Any), with trait: NSFontDescriptor.SymbolicTraits? = nil) -> Bool {
-    guard let font = attribute.1 as? NSFont else {
-        return false
-    }
-    guard let trait else {
-        return true
-    }
-    return font.fontDescriptor.symbolicTraits.contains(trait)
 }

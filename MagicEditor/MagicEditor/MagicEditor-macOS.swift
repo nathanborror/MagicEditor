@@ -8,6 +8,7 @@ class MagicEditorViewController: NSViewController {
         textView.textContentStorage?.delegate = self
         textView.textLayoutManager?.delegate = self
         textView.allowsUndo = true
+        textView.textContainerInset = .init(width: 16, height: 16)
         return textView
     }()
 

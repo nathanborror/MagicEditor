@@ -2,17 +2,29 @@ import SwiftUI
 
 /// A generic attachment view provider that should be used with custom `NSTextAttachment` instances.
 class MagicAttachmentViewProvider<Content: View>: NSTextAttachmentViewProvider {
-    let content: Content
+
+    private let content: Content
+    private var measuredSize: CGSize = .zero
 
     init(content: Content, textAttachment: NSTextAttachment, parentView: NSView?, textLayoutManager: NSTextLayoutManager?, location: any NSTextLocation) {
         self.content = content
         super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
+        tracksTextAttachmentViewBounds = true
     }
 
     override func loadView() {
         let attachmentView = MagicAttachmentView(content: content)
-        attachmentView.attachment = textAttachment
-        view = attachmentView
+        attachmentView.frame = CGRect(origin: .zero, size: measuredSize)
+        self.view = attachmentView
+    }
+
+    override func attachmentBounds(for attributes: [NSAttributedString.Key : Any], location: any NSTextLocation,
+                                   textContainer: NSTextContainer?, proposedLineFragment: CGRect, position: CGPoint) -> CGRect {
+        let measuringView = MagicAttachmentView(content: content)
+        let fittingSize = measuringView.fittingSize(for: proposedLineFragment.width)
+
+        measuredSize = fittingSize
+        return CGRect(origin: .zero, size: measuredSize)
     }
 }
 
@@ -40,26 +52,31 @@ fileprivate class MagicAttachmentView<Content: View>: NSView {
     }
 
     private func updateHostingView() {
-
-        // Clear previous hosting view and create a fresh one
         hostingController?.view.removeFromSuperview()
         hostingController = NSHostingController(rootView: content)
 
-        if let hostingView = hostingController?.view {
-            hostingView.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(hostingView)
+        guard let hostingView = hostingController?.view else { return }
 
-            NSLayoutConstraint.activate([
-                hostingView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                hostingView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                hostingView.topAnchor.constraint(equalTo: topAnchor),
-                hostingView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
-        }
+        hostingView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(hostingView)
+
+        NSLayoutConstraint.activate([
+            hostingView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            hostingView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            hostingView.topAnchor.constraint(equalTo: topAnchor),
+            hostingView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+
         invalidateIntrinsicContentSize()
     }
 
     override var intrinsicContentSize: NSSize {
         return hostingController?.view.intrinsicContentSize ?? .zero
+    }
+
+    func fittingSize(for width: CGFloat) -> CGSize {
+        guard let hostingController else { return .zero }
+        let targetSize = NSSize(width: width, height: .greatestFiniteMagnitude)
+        return hostingController.sizeThatFits(in: targetSize)
     }
 }

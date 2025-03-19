@@ -13,15 +13,13 @@ class RoleAttachment: NSTextAttachment, @unchecked Sendable {
     }
     
     override func viewProvider(for parentView: NSView?, location: NSTextLocation, textContainer: NSTextContainer?) -> NSTextAttachmentViewProvider? {
-        let provider = MagicAttachmentViewProvider(
+        MagicAttachmentViewProvider(
             content: RoleAttachmentView(role: role),
             textAttachment: self,
             parentView: parentView,
             textLayoutManager: textContainer?.textLayoutManager,
             location: location
         )
-        provider.tracksTextAttachmentViewBounds = true
-        return provider
     }
 }
 
