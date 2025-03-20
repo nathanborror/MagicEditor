@@ -12,7 +12,7 @@ class ArticleAttachment: NSTextAttachment, @unchecked Sendable {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewProvider(for parentView: NSView?, location: NSTextLocation, textContainer: NSTextContainer?) -> NSTextAttachmentViewProvider? {
+    override func viewProvider(for parentView: PlatformView?, location: NSTextLocation, textContainer: NSTextContainer?) -> NSTextAttachmentViewProvider? {
         MagicAttachmentViewProvider(
             content: ArticleAttachmentView(content: content),
             textAttachment: self,

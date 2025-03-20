@@ -1,4 +1,4 @@
-import AppKit
+import SwiftUI
 
 extension NSAttributedString.Key {
     public static var roleAttribute: NSAttributedString.Key {

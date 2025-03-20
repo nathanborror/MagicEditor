@@ -6,7 +6,7 @@ class MagicAttachmentViewProvider<Content: View>: NSTextAttachmentViewProvider {
     private let content: Content
     private var measuredSize: CGSize = .zero
 
-    init(content: Content, textAttachment: NSTextAttachment, parentView: NSView?, textLayoutManager: NSTextLayoutManager?, location: any NSTextLocation) {
+    init(content: Content, textAttachment: NSTextAttachment, parentView: PlatformView?, textLayoutManager: NSTextLayoutManager?, location: any NSTextLocation) {
         self.content = content
         super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
         tracksTextAttachmentViewBounds = true
@@ -29,21 +29,24 @@ class MagicAttachmentViewProvider<Content: View>: NSTextAttachmentViewProvider {
 }
 
 /// A generic attachment view that should only be used by `MagicAttachmentViewProvider` when loading custom `NSTextAttachment` views.
-fileprivate class MagicAttachmentView<Content: View>: NSView {
+fileprivate class MagicAttachmentView<Content: View>: PlatformView {
 
     var attachment: NSTextAttachment? {
         didSet { updateHostingView() }
     }
 
     private var content: Content
-    private var hostingController: NSHostingController<Content>?
+    private var hostingController: PlatformHostingController<Content>?
 
     init(content: Content) {
         self.content = content
         super.init(frame: .zero)
 
+        #if os(macOS)
         wantsLayer = true
         layer?.backgroundColor = .clear
+        #endif
+        
         updateHostingView()
     }
 
@@ -53,7 +56,7 @@ fileprivate class MagicAttachmentView<Content: View>: NSView {
 
     private func updateHostingView() {
         hostingController?.view.removeFromSuperview()
-        hostingController = NSHostingController(rootView: content)
+        hostingController = PlatformHostingController(rootView: content)
 
         guard let hostingView = hostingController?.view else { return }
 
@@ -70,13 +73,13 @@ fileprivate class MagicAttachmentView<Content: View>: NSView {
         invalidateIntrinsicContentSize()
     }
 
-    override var intrinsicContentSize: NSSize {
+    override var intrinsicContentSize: PlatformSize {
         return hostingController?.view.intrinsicContentSize ?? .zero
     }
 
     func fittingSize(for width: CGFloat) -> CGSize {
         guard let hostingController else { return .zero }
-        let targetSize = NSSize(width: width, height: .greatestFiniteMagnitude)
+        let targetSize = PlatformSize(width: width, height: .greatestFiniteMagnitude)
         return hostingController.sizeThatFits(in: targetSize)
     }
 }

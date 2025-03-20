@@ -4,8 +4,10 @@ import SwiftUI
 struct MainApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .background(.background)
+            NavigationStack {
+                ContentView()
+                    .background(.background)
+            }
         }
     }
 }

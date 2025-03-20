@@ -1,27 +1,21 @@
 import SwiftUI
 
-#if os(macOS)
-typealias PlatformFont = NSFont
-#else
-typealias PlatformFont = UIFont
-#endif
-
 @MainActor
 @Observable
 final class MagicEditorViewModel {
 
     private weak var controller: MagicEditorViewController? = nil
 
-    private var textContentStorage: NSTextContentStorage? {
-        controller?.textView.textContentStorage
-    }
-
     private var textStorage: NSTextStorage? {
-        textContentStorage?.textStorage
+        controller?.textView.textStorage
     }
 
     private var selectedRange: NSRange? {
+        #if os(macOS)
         controller?.textView.selectedRange()
+        #else
+        controller?.textView.selectedRange
+        #endif
     }
 
     func connect(to controller: MagicEditorViewController) {
@@ -42,11 +36,9 @@ final class MagicEditorViewModel {
     }
 
     func insert(attachment: NSTextAttachment) {
-        guard let textContentStorage, let textStorage, let selectedRange else { return }
+        guard let textStorage, let selectedRange else { return }
         let attachmentString = NSAttributedString(attachment: attachment)
-        textContentStorage.performEditingTransaction {
-            textStorage.insert(attachmentString, at: selectedRange.location)
-        }
+        textStorage.insert(attachmentString, at: selectedRange.location)
     }
 
     func encode() -> MagicDocument? {
@@ -67,7 +59,7 @@ final class MagicEditorViewModel {
             }
 
             // Font attributes
-            if MagicFunction.hasFont(attributes, with: .bold) {
+            if MagicFunction.hasFontBold(attributes) {
                 let attr = MagicDocument.Attribute(key: "Font.Bold", value: "", location: range.location, length: range.length)
                 out.attributes.append(attr)
             }
@@ -106,7 +98,7 @@ final class MagicEditorViewModel {
 extension MagicEditorViewModel {
 
     func bold() {
-        guard let textContentStorage, let textStorage, let selectedRange else { return }
+        guard let textStorage, let selectedRange else { return }
         guard selectedRange.location != textStorage.length else { return }
 
         var effectiveRange = NSRange(location: 0, length: 0)
@@ -117,16 +109,14 @@ extension MagicEditorViewModel {
                 return
             }
 
-            textContentStorage.performEditingTransaction {
-                if MagicFunction.isFont(attribute, with: .bold) {
-                    textStorage.addAttributes([
-                        .font: PlatformFont.systemFont(ofSize: 16)
-                    ], range: effectiveRange)
-                } else {
-                    textStorage.addAttributes([
-                        .font: PlatformFont.systemFont(ofSize: 16, weight: .bold)
-                    ], range: selectedRange)
-                }
+            if MagicFunction.isFontBold(attribute) {
+                textStorage.addAttributes([
+                    .font: PlatformFont.systemFont(ofSize: 16)
+                ], range: effectiveRange)
+            } else {
+                textStorage.addAttributes([
+                    .font: PlatformFont.systemFont(ofSize: 16, weight: .bold)
+                ], range: selectedRange)
             }
         }
     }
