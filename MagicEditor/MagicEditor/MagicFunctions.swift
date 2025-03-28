@@ -30,6 +30,14 @@ struct MagicFunction {
         #endif
     }
 
+    static func hasFontItalic(_ attributes: [NSAttributedString.Key: Any]) -> Bool {
+        #if os(macOS)
+        hasFont(attributes, with: .italic)
+        #else
+        hasFont(attributes, with: .traitItalic)
+        #endif
+    }
+
     static func hasFont(_ attributes: [NSAttributedString.Key: Any], with trait: PlatformFontDescriptor.SymbolicTraits? = nil) -> Bool {
         guard let font = attributes[NSAttributedString.Key.font] as? PlatformFont else {
             return false
@@ -45,6 +53,14 @@ struct MagicFunction {
         isFont(attribute, with: .bold)
         #else
         isFont(attribute, with: .traitBold)
+        #endif
+    }
+
+    static func isFontItalic(_ attribute: (NSAttributedString.Key, Any)) -> Bool {
+        #if os(macOS)
+        isFont(attribute, with: .italic)
+        #else
+        isFont(attribute, with: .traitItalic)
         #endif
     }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MagicEditor: PlatformViewControllerRepresentable {
-    @Binding var viewModel: MagicEditorViewModel
+    var viewModel: MagicEditorViewModel
 
     func makeViewController(context: Context) -> MagicEditorViewController {
         let controller = MagicEditorViewController()

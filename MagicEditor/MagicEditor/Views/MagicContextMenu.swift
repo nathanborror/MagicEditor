@@ -8,12 +8,11 @@ struct MagicContextMenu: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             ForEach(manager.options.indices, id: \.self) { index in
-                Button(action: {
+                Button {
                     manager.selection = index
                     manager.handleSelection()
-                }) {
+                } label: {
                     Text(manager.options[index].label)
-                        .font(.subheadline)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 8)
@@ -27,8 +26,9 @@ struct MagicContextMenu: View {
         .padding(4)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(.background)
+                .fill(.ultraThinMaterial)
                 .shadow(radius: 1)
+                .shadow(color: .primary.opacity(0.2), radius: 5, y: 3)
         )
         .onAppear {
             manager.selection = 0

@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D46E78122D9723B400DAAE89 /* MLXKit in Frameworks */ = {isa = PBXBuildFile; productRef = D46E78112D9723B400DAAE89 /* MLXKit */; };
+		D46E78142D9724EA00DAAE89 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E78132D9724EA00DAAE89 /* AppState.swift */; };
 		D49598EB2D9711D700F1B900 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49598EA2D9711D700F1B900 /* Document.swift */; };
 		D49598EE2D9712CD00F1B900 /* MagicContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49598ED2D9712CD00F1B900 /* MagicContextMenu.swift */; };
 		D800BF882D89FFEA00CD1D99 /* MagicFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800BF872D89FFE700CD1D99 /* MagicFunctions.swift */; };
 		D800BF8A2D8A0B5600CD1D99 /* ArticleAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800BF892D8A0B5600CD1D99 /* ArticleAttachment.swift */; };
 		D8BC50552D85DA47003B070F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50512D85DA47003B070F /* ContentView.swift */; };
-		D8BC50562D85DA47003B070F /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50532D85DA47003B070F /* MainApp.swift */; };
+		D8BC50562D85DA47003B070F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50532D85DA47003B070F /* App.swift */; };
 		D8BC50572D85DA47003B070F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8BC50502D85DA47003B070F /* Assets.xcassets */; };
 		D8BC505C2D85DAB9003B070F /* MagicEditor-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC505B2D85DAB9003B070F /* MagicEditor-macOS.swift */; platformFilters = (macos, ); };
 		D8BC505E2D85DAD1003B070F /* MagicEditor+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */; };
@@ -26,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D46E78132D9724EA00DAAE89 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		D49598EA2D9711D700F1B900 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		D49598ED2D9712CD00F1B900 /* MagicContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicContextMenu.swift; sourceTree = "<group>"; };
 		D800BF872D89FFE700CD1D99 /* MagicFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicFunctions.swift; sourceTree = "<group>"; };
@@ -34,7 +37,7 @@
 		D8BC50502D85DA47003B070F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8BC50512D85DA47003B070F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8BC50522D85DA47003B070F /* MagicEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MagicEditor.entitlements; sourceTree = "<group>"; };
-		D8BC50532D85DA47003B070F /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
+		D8BC50532D85DA47003B070F /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		D8BC505B2D85DAB9003B070F /* MagicEditor-macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor-macOS.swift"; sourceTree = "<group>"; };
 		D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor+SwiftUI.swift"; sourceTree = "<group>"; };
 		D8BC505F2D85DBBF003B070F /* MagicEditor-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicEditor-iOS.swift"; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D46E78122D9723B400DAAE89 /* MLXKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +88,8 @@
 		D8BC50542D85DA47003B070F /* MagicEditor */ = {
 			isa = PBXGroup;
 			children = (
-				D8BC50532D85DA47003B070F /* MainApp.swift */,
+				D8BC50532D85DA47003B070F /* App.swift */,
+				D46E78132D9724EA00DAAE89 /* AppState.swift */,
 				D8BC50512D85DA47003B070F /* ContentView.swift */,
 				D49598EA2D9711D700F1B900 /* Document.swift */,
 				D8BC50B82D873C18003B070F /* Extensions.swift */,
@@ -154,6 +159,7 @@
 			);
 			name = MagicEditor;
 			packageProductDependencies = (
+				D46E78112D9723B400DAAE89 /* MLXKit */,
 			);
 			productName = MagicEditor;
 			productReference = D8BC503E2D85DA28003B070F /* MagicEditor.app */;
@@ -183,6 +189,9 @@
 			);
 			mainGroup = D8BC50352D85DA28003B070F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D46E78102D9723B400DAAE89 /* XCRemoteSwiftPackageReference "swift-mlx-kit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8BC503F2D85DA28003B070F /* Products */;
 			projectDirPath = "";
@@ -216,13 +225,14 @@
 				D800BF8A2D8A0B5600CD1D99 /* ArticleAttachment.swift in Sources */,
 				D8BC50BD2D879C82003B070F /* MagicEditorViewModel.swift in Sources */,
 				D800BF882D89FFEA00CD1D99 /* MagicFunctions.swift in Sources */,
+				D46E78142D9724EA00DAAE89 /* AppState.swift in Sources */,
 				D49598EE2D9712CD00F1B900 /* MagicContextMenu.swift in Sources */,
 				D8BC50BB2D8742CF003B070F /* MagicAttachment.swift in Sources */,
 				D8BC50B92D873C18003B070F /* Extensions.swift in Sources */,
 				D8BC50652D862B90003B070F /* RoleFragment.swift in Sources */,
 				D49598EB2D9711D700F1B900 /* Document.swift in Sources */,
 				D8BC505E2D85DAD1003B070F /* MagicEditor+SwiftUI.swift in Sources */,
-				D8BC50562D85DA47003B070F /* MainApp.swift in Sources */,
+				D8BC50562D85DA47003B070F /* App.swift in Sources */,
 				D8BC50B72D872423003B070F /* RoleAttachment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,6 +454,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D46E78102D9723B400DAAE89 /* XCRemoteSwiftPackageReference "swift-mlx-kit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nathanborror/swift-mlx-kit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D46E78112D9723B400DAAE89 /* MLXKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D46E78102D9723B400DAAE89 /* XCRemoteSwiftPackageReference "swift-mlx-kit" */;
+			productName = MLXKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8BC50362D85DA28003B070F /* Project object */;
 }

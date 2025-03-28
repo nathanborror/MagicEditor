@@ -130,7 +130,8 @@ final class MagicEditorViewModel {
                 let attachmentString = NSAttributedString(attachment: attachment)
                 out.replaceCharacters(in: range, with: attachmentString)
             case "Attachment.Article":
-                let attachment = ArticleAttachment(content: attribute.value)
+                let value = out.attributedSubstring(from: range)
+                let attachment = ArticleAttachment(content: value.string)
                 let attachmentString = NSAttributedString(attachment: attachment)
                 out.replaceCharacters(in: range, with: attachmentString)
             case "Font.Bold":

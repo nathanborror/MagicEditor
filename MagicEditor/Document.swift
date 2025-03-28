@@ -23,3 +23,42 @@ struct MagicDocument: Codable {
         self.attributes = attributes
     }
 }
+
+extension MagicDocument {
+
+    var messages: [ChatRequest.Message] {
+        var messages: [ChatRequest.Message] = []
+
+        // Filter out roles and sort them by location
+        let roles = document.attributes
+            .filter { $0.key == "Attachment.Role" }
+            .sorted { $0.location < $1.location}
+
+        // Determine message ranges
+        for (i, role) in roles.enumerated() {
+            if (i+1) < roles.count {
+                let location = role.location+role.length
+                let length = roles[i+1].location
+                let content = extract(from: document.text, location: location, length: length)
+                messages.append(.init(role: .init(rawValue: role.value)!, content: content))
+            } else {
+                let location = role.location+role.length
+                let length = document.text.count
+                let content = extract(from: document.text, location: location, length: length)
+                messages.append(.init(role: .init(rawValue: role.value)!, content: content))
+            }
+        }
+
+        return messages
+    }
+
+    private func extract(from text: String, location: Int, length: Int, trimWhitespace: Bool = true) -> String {
+        let startIndex = text.index(text.startIndex, offsetBy: location)
+        let endIndex = text.index(text.startIndex, offsetBy: length)
+        let out = String(text[startIndex..<endIndex])
+        if trimWhitespace {
+            return out.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return out
+    }
+}
