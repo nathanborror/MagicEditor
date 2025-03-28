@@ -3,44 +3,66 @@ import SwiftUI
 struct ContentView: View {
 
     @State private var viewModel = MagicEditorViewModel()
+    @State private var contextManager = MagicContextMenuManager()
 
     var body: some View {
-        MagicEditor(viewModel: $viewModel)
-            .toolbar {
-                ToolbarItem {
-                    Menu {
-                        Button("User") {
-                            handleInsert(role: "user")
-                        }
-                        Button("Assistant") {
-                            handleInsert(role: "assistant")
-                        }
-                        Button("System") {
-                            handleInsert(role: "system")
-                        }
-                    } label: {
-                        Label("Insert", systemImage: "paperclip")
+        ZStack(alignment: .topLeading) {
+            MagicEditor(viewModel: $viewModel)
+            if viewModel.showingContextMenu {
+                MagicContextMenu(manager: contextManager)
+                    .frame(width: 150)
+                    .offset(x: viewModel.contextMenuPosition.x, y: viewModel.contextMenuPosition.y)
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                Menu {
+                    Button("User") {
+                        handleInsert(role: "user")
                     }
-                    .menuIndicator(.hidden)
+                    Button("Assistant") {
+                        handleInsert(role: "assistant")
+                    }
+                    Button("System") {
+                        handleInsert(role: "system")
+                    }
+                } label: {
+                    Label("Insert", systemImage: "paperclip")
                 }
-                ToolbarItem {
-                    Button {
-                        handleSubmit()
-                    } label: {
-                        Label("Export", systemImage: "square.and.arrow.up")
-                    }
-                }
-                ToolbarItem {
-                    Button {
-                        viewModel.bold()
-                    } label: {
-                        Label("Bold", systemImage: "bold")
-                    }
+                .menuIndicator(.hidden)
+            }
+            ToolbarItem {
+                Button {
+                    viewModel.bold()
+                } label: {
+                    Label("Bold", systemImage: "bold")
                 }
             }
-            .onAppear {
-                handleLoad()
+            ToolbarItem {
+                Button {
+                    handleSubmit()
+                } label: {
+                    Label("Export", systemImage: "square.and.arrow.up")
+                }
             }
+        }
+        .onChange(of: viewModel.contextMenuNotification) { _, newValue in
+            switch newValue?.kind {
+            case .submit:
+                handleSubmit()
+            case .up:
+                contextManager.handleSelectionMoveUp()
+            case .down:
+                contextManager.handleSelectionMoveDown()
+            case .select:
+                contextManager.handleSelection()
+            case .none:
+                break
+            }
+        }
+        .onAppear {
+            handleLoad()
+        }
     }
 
     func handleLoad() {
@@ -77,6 +99,21 @@ struct ContentView: View {
                 ]
             )
         )
+
+        contextManager.options = [
+            .init(label: "User") {
+                viewModel.backspace()
+                handleInsert(role: "user")
+            },
+            .init(label: "Assistant") {
+                viewModel.backspace()
+                handleInsert(role: "assistant")
+            },
+            .init(label: "System") {
+                viewModel.backspace()
+                handleInsert(role: "system")
+            }
+        ]
     }
 
     func handleInsert(role: String) {

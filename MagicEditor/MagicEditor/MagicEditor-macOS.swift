@@ -1,34 +1,86 @@
 import AppKit
 
 class MagicEditorViewController: NSViewController {
+    typealias Callback = () -> Void
+
+    var onSubmit: Callback?
+    var onMenuShow: ((CGPoint) -> Void)?
+    var onMenuHide: Callback?
+    var onMenuUp: Callback?
+    var onMenuDown: Callback?
+    var onMenuSelect: Callback?
+
+    lazy var scrollView: NSScrollView = {
+        let scrollView = NSScrollView()
+        scrollView.documentView = textView
+        return scrollView
+    }()
 
     lazy var textView: NSTextView = {
         let textView = NSTextView()
         textView.delegate = self
+        textView.textStorage?.delegate = self
         textView.textContentStorage?.delegate = self
         textView.textLayoutManager?.delegate = self
         textView.allowsUndo = true
         textView.textContainerInset = .init(width: 16, height: 16)
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = true
+        textView.autoresizingMask = [.width]
         return textView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(textView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
 
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: view.topAnchor),
-            textView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
 
     func setAttributedString(_ attributedString: NSAttributedString) {
         if textView.textStorage?.isEqual(to: attributedString) == false {
             textView.textStorage?.setAttributedString(attributedString)
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+
+                // Invalidate and refresh entire layout
+                if let layoutManager = self.textView.textLayoutManager {
+                    layoutManager.invalidateLayout(for: layoutManager.documentRange)
+                    layoutManager.ensureLayout(for: layoutManager.documentRange)
+                }
+                //self.textView.needsDisplay = true
+                //self.textView.scrollToBeginningOfDocument(nil)
+            }
+        }
+    }
+}
+
+extension MagicEditorViewController: NSTextStorageDelegate {
+
+    func textStorage(_ textStorage: NSTextStorage, didProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
+        guard editedMask.contains(.editedCharacters) else { return }
+
+        // Check if the last character entered was "/"
+        if delta > 0 && editedRange.location + editedRange.length <= textStorage.string.count {
+            let nsString = textStorage.string as NSString
+            if editedRange.location + editedRange.length > 0 &&
+               nsString.substring(with: NSRange(location: editedRange.location + editedRange.length - 1, length: 1)) == "/" {
+
+                // Use DispatchQueue.main.async to ensure the text editing operation is complete
+                DispatchQueue.main.async { [weak self] in
+                    if let point = self?.textView.cursorPosition() {
+                        self?.onMenuShow?(CGPoint(x: point.x, y: point.y))
+                    }
+                }
+            }
         }
     }
 }
@@ -87,4 +139,69 @@ extension MagicEditorViewController: NSTextLayoutManagerDelegate {
 }
 
 extension MagicEditorViewController: NSTextViewDelegate {
+
+    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+
+        // Check for Cmd+Enter key combination
+        if NSEvent.modifierFlags.contains(.command) && NSApp.currentEvent?.keyCode == 0x24 {
+            onSubmit?()
+            return true
+        }
+
+        // Check for backspace key when menu is showing
+        if commandSelector == #selector(NSResponder.deleteBackward(_:)) {
+            if textView.hasSlashBeforeCursor {
+                onMenuHide?()
+                return false
+            }
+        }
+
+        // Check for arrow up key when menu is showing
+        if commandSelector == #selector(NSResponder.moveUp(_:)) {
+            if textView.hasSlashBeforeCursor {
+                onMenuUp?()
+                return true
+            }
+        }
+
+        // Check for arrow down key when menu is showing
+        if commandSelector == #selector(NSResponder.moveDown(_:)) {
+            if textView.hasSlashBeforeCursor {
+                onMenuDown?()
+                return true
+            }
+        }
+
+        // Check for enter key when menu is showing
+        if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+            if textView.hasSlashBeforeCursor {
+                onMenuSelect?()
+                return true
+            }
+        }
+
+        return false
+    }
+}
+
+extension NSTextView {
+
+    var hasSlashBeforeCursor: Bool {
+        let cursorLocation = selectedRange().location
+        guard cursorLocation > 0 else { return false }
+        let range = NSRange(location: cursorLocation-1, length: 1)
+        let characterBeforeCursor = textStorage?.attributedSubstring(from: range)
+        return characterBeforeCursor?.string == "/"
+    }
+
+    func cursorPosition() -> NSPoint? {
+        let selectedRange = selectedRange()
+        let rect = firstRect(forCharacterRange: selectedRange, actualRange: nil)
+
+        // Convert from screen coordinates to window coordinates
+        let windowRect = window?.convertFromScreen(rect)
+
+        // Convert from window coordinates to text view coordinates
+        return convert(windowRect?.origin ?? .zero, from: nil)
+    }
 }

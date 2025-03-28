@@ -4,6 +4,10 @@ import SwiftUI
 @Observable
 final class MagicEditorViewModel {
 
+    var showingContextMenu = false
+    var contextMenuPosition: CGPoint = .zero
+    var contextMenuNotification: MenuNotification? = nil
+
     private weak var controller: MagicEditorViewController? = nil
 
     private var textStorage: NSTextStorage? {
@@ -20,6 +24,30 @@ final class MagicEditorViewModel {
 
     func connect(to controller: MagicEditorViewController) {
         self.controller = controller
+        self.controller?.onSubmit = { [weak self] in
+            self?.contextMenuNotification = .init(.submit)
+            self?.showingContextMenu = false
+            self?.contextMenuPosition = .zero
+        }
+        self.controller?.onMenuShow = { [weak self] point in
+            self?.showingContextMenu = true
+            self?.contextMenuPosition = point
+        }
+        self.controller?.onMenuHide = { [weak self] in
+            self?.showingContextMenu = false
+            self?.contextMenuPosition = .zero
+        }
+        self.controller?.onMenuUp = { [weak self] in
+            self?.contextMenuNotification = .init(.up)
+        }
+        self.controller?.onMenuDown = { [weak self] in
+            self?.contextMenuNotification = .init(.down)
+        }
+        self.controller?.onMenuSelect = { [weak self] in
+            self?.contextMenuNotification = .init(.select)
+            self?.showingContextMenu = false
+            self?.contextMenuPosition = .zero
+        }
     }
 
     func read(document: MagicDocument) {
@@ -39,6 +67,26 @@ final class MagicEditorViewModel {
         guard let textStorage, let selectedRange else { return }
         let attachmentString = NSAttributedString(attachment: attachment)
         textStorage.insert(attachmentString, at: selectedRange.location)
+    }
+
+    func insert(text: String) {
+        guard let textStorage, let selectedRange else { return }
+        let attributedString = NSAttributedString(string: text, attributes: [
+            .font: PlatformFont.systemFont(ofSize: 16)
+        ])
+        textStorage.insert(attributedString, at: selectedRange.location)
+    }
+
+    func backspace() {
+        guard let textStorage, let selectedRange else { return }
+        let cursorPosition = selectedRange.location
+
+        // Make sure there's a character before the cursor and
+        // calculate the range of the character before the cursor
+        if cursorPosition > 0 {
+            let range = NSRange(location: cursorPosition - 1, length: 1)
+            textStorage.replaceCharacters(in: range, with: "")
+        }
     }
 
     func encode() -> MagicDocument? {
@@ -122,26 +170,33 @@ extension MagicEditorViewModel {
     }
 }
 
-struct MagicDocument: Codable {
-    var text: String
-    var attributes: [Attribute]
+extension MagicEditorViewModel {
 
-    struct Attribute: Codable {
-        var key: String
-        var value: String
-        var location: Int
-        var length: Int
+    struct MenuNotification: Identifiable, Equatable {
+        let id: String
+        let kind: Kind
 
-        init(key: String, value: String, location: Int, length: Int) {
-            self.key = key
-            self.value = value
-            self.location = location
-            self.length = length
+        enum Kind {
+            case down
+            case up
+            case select
+            case submit
+        }
+
+        init(_ kind: Kind) {
+            self.id = UUID().uuidString
+            self.kind = kind
         }
     }
 
-    init(_ text: String, attributes: [Attribute] = []) {
-        self.text = text
-        self.attributes = attributes
+    enum Error: Swift.Error, CustomStringConvertible {
+        case missingTextStorage
+
+        public var description: String {
+            switch self {
+            case .missingTextStorage:
+                "Missing text storage"
+            }
+        }
     }
 }

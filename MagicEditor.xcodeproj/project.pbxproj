@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D49598EB2D9711D700F1B900 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49598EA2D9711D700F1B900 /* Document.swift */; };
+		D49598EE2D9712CD00F1B900 /* MagicContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49598ED2D9712CD00F1B900 /* MagicContextMenu.swift */; };
 		D800BF882D89FFEA00CD1D99 /* MagicFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800BF872D89FFE700CD1D99 /* MagicFunctions.swift */; };
 		D800BF8A2D8A0B5600CD1D99 /* ArticleAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800BF892D8A0B5600CD1D99 /* ArticleAttachment.swift */; };
 		D8BC50552D85DA47003B070F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC50512D85DA47003B070F /* ContentView.swift */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D49598EA2D9711D700F1B900 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		D49598ED2D9712CD00F1B900 /* MagicContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicContextMenu.swift; sourceTree = "<group>"; };
 		D800BF872D89FFE700CD1D99 /* MagicFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicFunctions.swift; sourceTree = "<group>"; };
 		D800BF892D8A0B5600CD1D99 /* ArticleAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleAttachment.swift; sourceTree = "<group>"; };
 		D8BC503E2D85DA28003B070F /* MagicEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,6 +57,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D49598EC2D9712C100F1B900 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D49598ED2D9712CD00F1B900 /* MagicContextMenu.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D8BC50352D85DA28003B070F = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +86,7 @@
 			children = (
 				D8BC50532D85DA47003B070F /* MainApp.swift */,
 				D8BC50512D85DA47003B070F /* ContentView.swift */,
+				D49598EA2D9711D700F1B900 /* Document.swift */,
 				D8BC50B82D873C18003B070F /* Extensions.swift */,
 				D8BC505A2D85DAAD003B070F /* MagicEditor */,
 				D8BC50582D85DA4B003B070F /* Resources */,
@@ -96,6 +109,7 @@
 			children = (
 				D8BC50B52D87241C003B070F /* Attachments */,
 				D8BC50632D862B74003B070F /* Fragments */,
+				D49598EC2D9712C100F1B900 /* Views */,
 				D8BC50BC2D879C82003B070F /* MagicEditorViewModel.swift */,
 				D8BC505D2D85DAD1003B070F /* MagicEditor+SwiftUI.swift */,
 				D8BC505B2D85DAB9003B070F /* MagicEditor-macOS.swift */,
@@ -202,9 +216,11 @@
 				D800BF8A2D8A0B5600CD1D99 /* ArticleAttachment.swift in Sources */,
 				D8BC50BD2D879C82003B070F /* MagicEditorViewModel.swift in Sources */,
 				D800BF882D89FFEA00CD1D99 /* MagicFunctions.swift in Sources */,
+				D49598EE2D9712CD00F1B900 /* MagicContextMenu.swift in Sources */,
 				D8BC50BB2D8742CF003B070F /* MagicAttachment.swift in Sources */,
 				D8BC50B92D873C18003B070F /* Extensions.swift in Sources */,
 				D8BC50652D862B90003B070F /* RoleFragment.swift in Sources */,
+				D49598EB2D9711D700F1B900 /* Document.swift in Sources */,
 				D8BC505E2D85DAD1003B070F /* MagicEditor+SwiftUI.swift in Sources */,
 				D8BC50562D85DA47003B070F /* MainApp.swift in Sources */,
 				D8BC50B72D872423003B070F /* RoleAttachment.swift in Sources */,

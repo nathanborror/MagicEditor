@@ -1,11 +1,5 @@
 import SwiftUI
 
-#if os(macOS)
-typealias PlatformViewControllerRepresentable = NSViewControllerRepresentable
-#else
-typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
-#endif
-
 struct MagicEditor: PlatformViewControllerRepresentable {
     @Binding var viewModel: MagicEditorViewModel
 

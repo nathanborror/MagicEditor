@@ -1,12 +1,14 @@
 import SwiftUI
 
 #if os(macOS)
+typealias PlatformViewControllerRepresentable = NSViewControllerRepresentable
 typealias PlatformFontDescriptor = NSFontDescriptor
 typealias PlatformFont = NSFont
 typealias PlatformView = NSView
 typealias PlatformHostingController = NSHostingController
 typealias PlatformSize = NSSize
 #else
+typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
 typealias PlatformFontDescriptor = UIFontDescriptor
 typealias PlatformFont = UIFont
 typealias PlatformView = UIView
