@@ -8,18 +8,27 @@ final class MagicEditorViewModel {
     var contextMenuPosition: CGPoint = .zero
     var contextMenuNotification: MenuNotification? = nil
 
-    private weak var controller: MagicEditorViewController? = nil
+    weak var controller: MagicEditorViewController? = nil
 
-    private var textStorage: NSTextStorage? {
+    var textStorage: NSTextStorage? {
         controller?.textView.textStorage
     }
 
-    private var selectedRange: NSRange? {
-        #if os(macOS)
-        controller?.textView.selectedRange()
-        #else
-        controller?.textView.selectedRange
-        #endif
+    var selectedRange: NSRange {
+        get {
+            #if os(macOS)
+            controller?.textView.selectedRange() ?? .init()
+            #else
+            controller?.textView.selectedRange ?? .init()
+            #endif
+        }
+        set {
+            #if os(macOS)
+            controller?.textView.setSelectedRange(newValue)
+            #else
+            controller?.textView.selectedRange = newValue
+            #endif
+        }
     }
 
     func connect(to controller: MagicEditorViewController) {
@@ -63,28 +72,36 @@ final class MagicEditorViewModel {
         controller?.setAttributedString(attributedString)
     }
 
-    func insert(attachment: NSTextAttachment) {
-        guard let textStorage, let selectedRange else { return }
-        let attachmentString = NSAttributedString(attachment: attachment)
-        textStorage.insert(attachmentString, at: selectedRange.location)
+    func insert(text: String) {
+        insert(text: text, at: selectedRange.location)
+        selectedRange = .init(location: selectedRange.location + text.count, length: 0)
     }
 
-    func insert(text: String) {
-        guard let textStorage, let selectedRange else { return }
+    func insert(text: String, at location: Int) {
+        guard let textStorage else { return }
         let attributedString = NSAttributedString(string: text, attributes: [
-            .font: PlatformFont.systemFont(ofSize: 16)
+            .font: PlatformFont.systemFont(ofSize: 16),
         ])
-        textStorage.insert(attributedString, at: selectedRange.location)
+        textStorage.insert(attributedString, at: location)
+    }
+
+    func insert(attachment: NSTextAttachment) {
+        guard let textStorage else { return }
+
+        let attachmentString = NSAttributedString(attachment: attachment)
+        textStorage.insert(attachmentString, at: selectedRange.location)
+
+        selectedRange = .init(location: selectedRange.location + 1, length: 0)
     }
 
     func backspace() {
-        guard let textStorage, let selectedRange else { return }
-        let cursorPosition = selectedRange.location
+        guard let textStorage else { return }
+        let cursorLocation = selectedRange.location
 
-        // Make sure there's a character before the cursor and
-        // calculate the range of the character before the cursor
-        if cursorPosition > 0 {
-            let range = NSRange(location: cursorPosition - 1, length: 1)
+        // Make sure there's a character before the cursor
+        if cursorLocation > 0 {
+            // Calculate the range of the character before the cursor
+            let range = NSRange(location: cursorLocation - 1, length: 1)
             textStorage.replaceCharacters(in: range, with: "")
         }
     }
@@ -146,7 +163,7 @@ final class MagicEditorViewModel {
 extension MagicEditorViewModel {
 
     func bold() {
-        guard let textStorage, let selectedRange else { return }
+        guard let textStorage else { return }
         guard selectedRange.location != textStorage.length else { return }
 
         var effectiveRange = NSRange(location: 0, length: 0)

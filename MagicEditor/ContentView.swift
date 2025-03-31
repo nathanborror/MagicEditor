@@ -119,6 +119,8 @@ struct ContentView: View {
     func handleInsert(role: String) {
         let attachment = RoleAttachment(role: role)
         viewModel.insert(attachment: attachment)
+        viewModel.insert(text: "\n")
+        viewModel.showingContextMenu = false
     }
 
     func handleSubmit() {
