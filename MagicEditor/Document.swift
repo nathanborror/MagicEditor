@@ -1,4 +1,5 @@
 import Foundation
+import MLXKit
 
 struct MagicDocument: Codable {
     var text: String
@@ -30,7 +31,7 @@ extension MagicDocument {
         var messages: [ChatRequest.Message] = []
 
         // Filter out roles and sort them by location
-        let roles = document.attributes
+        let roles = attributes
             .filter { $0.key == "Attachment.Role" }
             .sorted { $0.location < $1.location}
 
@@ -39,12 +40,12 @@ extension MagicDocument {
             if (i+1) < roles.count {
                 let location = role.location+role.length
                 let length = roles[i+1].location
-                let content = extract(from: document.text, location: location, length: length)
+                let content = extract(from: text, location: location, length: length)
                 messages.append(.init(role: .init(rawValue: role.value)!, content: content))
             } else {
                 let location = role.location+role.length
-                let length = document.text.count
-                let content = extract(from: document.text, location: location, length: length)
+                let length = text.count
+                let content = extract(from: text, location: location, length: length)
                 messages.append(.init(role: .init(rawValue: role.value)!, content: content))
             }
         }
