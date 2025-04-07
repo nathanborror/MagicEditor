@@ -34,7 +34,7 @@
       "location" : "https://github.com/ml-explore/mlx-swift-examples",
       "state" : {
         "branch" : "main",
-        "revision" : "046cf153135b6c9cdc1dd6afdc071a2008006a66"
+        "revision" : "cb66b4bc6bc1a69663837881e7f1260cd49d6b59"
       }
     },
     {
@@ -70,7 +70,7 @@
       "location" : "https://github.com/nathanborror/swift-mlx-kit",
       "state" : {
         "branch" : "main",
-        "revision" : "8ef310df57085af271dbfa1da90939a129fe6ef3"
+        "revision" : "c531133cd3f1ff4fa9aa0caaa9e5f0093ebd9858"
       }
     },
     {

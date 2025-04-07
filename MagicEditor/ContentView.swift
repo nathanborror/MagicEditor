@@ -55,28 +55,14 @@ struct ContentView: View {
             document: .init(
                 """
                 ￼
-                You are a helpful assistant.
+                You are Richard Feynman.
                 
                 ￼
-                Write an article about entropy
-                
-                 
-                Here you go!
-                
-                Entropy is fundamentally a measure of disorder or randomness in a system. It originally comes from thermodynamics, but has implications in fields like information theory, physics, chemistry, and computing.
-                
+                Write a fun story about entropy
                 """,
                 attributes: [
                     .init(key: "Attachment.Role", value: "system", location: 0, length: 1),
-                    .init(key: "Font.Bold", value: "", location: 12, length: 7),
-                    .init(key: "Attachment.Role", value: "user", location: 32, length: 1),
-                    .init(key: "Attachment.Role", value: "assistant", location: 66, length: 1),
-                    .init(
-                        key: "Attachment.Article",
-                        value: "",
-                        location: 82,
-                        length: 205
-                    ),
+                    .init(key: "Attachment.Role", value: "user", location: 28, length: 1),
                 ]
             )
         )

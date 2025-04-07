@@ -29,6 +29,7 @@ final class AppState {
     private init() {
         selectedModelID = Defaults.llama_3_2_1b_4bit.id
         client = .shared
+        print(URL.documentsDirectory.absoluteString)
     }
 
     func generate(messages: [ChatRequest.Message], delta: (String) -> Void) async throws {
