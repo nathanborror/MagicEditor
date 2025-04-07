@@ -8,9 +8,10 @@ final class AppState {
     static let shared = AppState()
 
     var selectedModelID: String
+    var modelProgress: [String: Double] = [:]
 
     var selectedModel: Model? {
-        try? client.getModel(selectedModelID)
+        try? client.get(model: selectedModelID)
     }
 
     enum Error: Swift.Error, CustomStringConvertible {
@@ -24,15 +25,27 @@ final class AppState {
         }
     }
 
-    let client: Client
+    let client: MLXKit.Client
 
     private init() {
         selectedModelID = Defaults.llama_3_2_1b_4bit.id
-        client = .shared
+        client = .init()
         print(URL.documentsDirectory.absoluteString)
     }
 
     func generate(messages: [ChatRequest.Message], delta: (String) -> Void) async throws {
+
+        // Load the model if it isn't cached
+        if !client.hasModelCached(selectedModelID) {
+            let _ = try await client.fetchModel(selectedModelID) { progress in
+                Task {
+                    await MainActor.run {
+                        self.modelProgress[self.selectedModelID] = progress
+                    }
+                }
+            }
+        }
+
         let request = ChatRequest(
             model: selectedModelID,
             messages: messages,

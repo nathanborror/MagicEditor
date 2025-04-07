@@ -121,7 +121,10 @@ struct InspectorView: View {
                 ForEach(state.client.models) { model in
                     VStack(alignment: .leading, spacing: 0) {
                         Text(model.name)
-                        ProgressView(value: model.loaded)
+
+                        if let progress = state.modelProgress[model.id] {
+                            ProgressView(value: progress)
+                        }
                     }
                     .tag(model.id)
                 }
